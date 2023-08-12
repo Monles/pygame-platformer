@@ -4,6 +4,7 @@ import pygame
 
 from scripts.utils import load_image, load_images
 from scripts.entities import PhysicsEntity
+from scripts.tilemap import Tilemap
 
 
 class Game:
@@ -12,6 +13,7 @@ class Game:
 
         pygame.display.set_caption('Pygame Platformer')
         self.screen = pygame.display.set_mode((640, 480))
+        self.display = pygame.Surface((320, 240))
 
         self.clock = pygame.time.Clock()
 
@@ -25,17 +27,21 @@ class Game:
 
         }
 
-        print(self.assets)
+        # print(self.assets)
 
         self.player = PhysicsEntity(self, 'player', (50, 50), (8, 15))
+
+        self.tilemap = Tilemap(self, tile_size=16)
 
     def run(self):
         while True:
             self.screen.fill((14, 219, 248))
 
+            self.tilemap.render(self.display)
+
             self.player.update(
                 (self.movement[1] - self.movement[0], 0))
-            self.player.render(self.screen)
+            self.player.render(self.display)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
