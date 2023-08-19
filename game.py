@@ -33,6 +33,7 @@ class Game:
             'player/jump': Animation(load_images('entities/player/jump')),
             'player/slide': Animation(load_images('entities/player/slide')),
             'player/wall_slide': Animation(load_images('entities/player/wall_slide')),
+            'particle/leaf': Animation(load_images('particles/leaf'), img_dur=20, loop=False),
         }
 
         self.clouds = Clouds(self.assets['clouds'], count=16)
@@ -41,6 +42,15 @@ class Game:
 
         self.tilemap = Tilemap(self, tile_size=16)
         self.tilemap.load('map.json')
+
+        # print(self.tilemap.extract(
+        #     [('large_decor', 2)], keep=True))
+
+        self.leaf_spawners = []
+        for tree in self.tilemap.extract([('large_decor', 2)], keep=True):
+            self.leaf_spawners.append(pygame.Rect(
+                4 + tree['pos'][0], 4 + tree['pos'][1], 23, 13))
+        print(self.leaf_spawners)
 
         self.scroll = [0, 0]
 
